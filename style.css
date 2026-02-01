@@ -1,5 +1,7 @@
 /* =========================================================
-   Nature Prime Spa — style.css (SEM RESPONSIVO por enquanto)
+   Nature Prime Spa — style.css (COM RESPONSIVO)
+   - Mantém layout desktop como está
+   - Ajustes via media queries + prevenção de scroll horizontal
    ========================================================= */
 
 /* --------- 1) Reset + Variáveis --------- */
@@ -22,10 +24,17 @@
   --font-body:  "Inter", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 
   --container: 1120px;
+
+  /* ✅ Gutter controlado (mantém desktop igual: 48px) */
+  --gutter: 48px;
 }
 
 *{ box-sizing:border-box; }
 html{ scroll-behavior:smooth; }
+
+/* ✅ Evita scroll horizontal (sem “quebrar” layout) */
+html, body{ overflow-x: hidden; }
+
 body{
   margin:0;
   font-family: var(--font-body);
@@ -39,7 +48,7 @@ p{ margin: 0 0 1rem; }
 
 /* Utilitários */
 .container{
-  width: min(var(--container), calc(100% - 48px));
+  width: min(var(--container), calc(100% - var(--gutter)));
   margin-inline: auto;
 }
 .muted{ color: var(--muted); }
@@ -848,3 +857,269 @@ h3{ font-size: 1.35rem; line-height: 1.2; }
 
 .image-zoom__nav--prev{ left: 24px; }
 .image-zoom__nav--next{ right: 24px; }
+
+
+/* =========================================================
+   14) RESPONSIVIDADE (somente overrides)
+   Breakpoints solicitados:
+   - Mobile: (max-width: 575.98px)
+   - Tablet: (min-width: 576px) and (max-width: 991.98px)
+   - Desktop: (min-width: 992px) and (max-width: 1199.98px)
+   - Extra Large: (min-width: 1200px)
+   ========================================================= */
+
+
+/* --------- 14.1) Ajustes globais (anti overflow) --------- */
+/* ✅ Evita itens estourando em grids/flex (sem mudar identidade visual) */
+.section__header,
+.lead,
+.insta__text,
+.slide__overlay p,
+.atendimento__desc{
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+/* ✅ Se algum link/cta muito longo aparecer, quebra sem criar scroll */
+.btn,
+.nav__link{
+  max-width: 100%;
+}
+
+
+/* --------- 14.2) Mobile (até 575.98px) --------- */
+@media (max-width: 575.98px){
+
+  /* ✅ Mais “respiro” lateral para textos (nada colado nas bordas) */
+  :root{ --gutter: 28px; }
+
+  /* Tipografia mais confortável */
+  h1{ font-size: 2.15rem; line-height: 1.12; }
+  h2{ font-size: 1.85rem; line-height: 1.15; }
+  h3{ font-size: 1.22rem; }
+
+  .lead{ font-size: 1rem; }
+
+  /* Seções com menos altura (mobile) */
+  .section{ padding: 82px 0; }
+  .section__header{ margin-bottom: 20px; }
+
+  /* Header: empilha sem mexer no desktop */
+  .header__inner--split{
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 12px 0;
+  }
+  .brand--center{ order: 1; }
+  .nav--left{ order: 2; justify-self: center; }
+  .nav--right{ order: 3; justify-self: center; }
+
+  /* Nav: wrap + área de toque melhor */
+  .nav__list{
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .nav__link{
+    padding: 12px 14px;
+    font-size: .95rem;
+  }
+
+  .brand__img{ height: 56px; }
+
+  /* HERO */
+  .hero--image-only{ min-height: 86vh; }
+  .hero__center{ padding: 0 12px; }
+  .hero__center h1{
+    font-size: 2.05rem;
+    line-height: 1.2;
+    margin-bottom: 14px;
+  }
+  .hero__cta-text{
+    font-size: .88rem;
+    letter-spacing: 2.5px;
+  }
+
+  /* SOBRE */
+  .about__grid{
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  .about__values{
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .about__media img{
+    height: 360px;
+    animation: none; /* ✅ reduz “pulo” no mobile e melhora performance */
+  }
+
+  /* SLIDER: 1 slide por vez */
+  .slide{
+    min-width: 100%;
+    height: 360px;
+  }
+  .slide__overlay{
+    padding: 18px;
+    opacity: 1;              /* ✅ mobile não depende de hover */
+    transform: none;
+    background: linear-gradient(
+      180deg,
+      rgba(15,18,20,.55) 0%,
+      rgba(15,18,20,.28) 55%,
+      rgba(15,18,20,.0) 100%
+    );
+  }
+  .slide__overlay h3{ font-size: 1.25rem; }
+  .slide__overlay p{ font-size: .92rem; }
+  .slider__btn{
+    width: 40px;
+    height: 40px;
+    font-size: 22px;
+  }
+  .slider__btn--prev{ left: 8px; }
+  .slider__btn--next{ right: 8px; }
+  .slider__dots{ bottom: 8px; gap: 8px; }
+
+  /* DEPOIMENTOS */
+  .testimonials__grid{
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  .testimonials__photo{
+    height: 360px;
+  }
+  .testimonials__card{
+    width: 100%;
+    max-width: 420px;
+  }
+
+  /* INSTAGRAM: 2 colunas */
+  .insta__grid{
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .insta__item img{ height: 180px; }
+  .insta__text{
+    margin: 20px auto 14px;
+    font-size: .98rem;
+    padding-inline: 2px;
+  }
+
+  /* ATENDIMENTO */
+  .atendimento__grid{
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+  .atendimento__title{
+    font-size: 38px;
+    letter-spacing: .05em;
+  }
+  .atendimento__desc{
+    margin-bottom: 18px;
+    max-width: 60ch;
+  }
+  .atendimento__map{
+    width: 100%;
+    margin-inline: auto;
+  }
+
+  /* FOOTER */
+  .footer__inner{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  /* Botões flutuantes: um pouco menores */
+  .float-actions{ right: 14px; bottom: 14px; gap: 10px; }
+  .float-wpp, .float-top{ width: 52px; height: 52px; }
+  .wpp-ico{ width: 28px; height: 28px; }
+
+  /* Modal: setas/close mais “safe” em telas pequenas */
+  .image-zoom{ padding: 18px; }
+  .image-zoom__nav{
+    width: 46px;
+    height: 46px;
+    font-size: 24px;
+  }
+  .image-zoom__nav--prev{ left: 14px; }
+  .image-zoom__nav--next{ right: 14px; }
+  .image-zoom__close{ top: 14px; right: 14px; }
+}
+
+
+/* --------- 14.3) Tablet (576px a 991.98px) --------- */
+@media (min-width: 576px) and (max-width: 991.98px){
+
+  :root{ --gutter: 40px; }
+
+  /* Seções levemente menores */
+  .section{ padding: 105px 0; }
+
+  /* Header: mantém 3 colunas, mas dá respiro e evita “aperto” */
+  .header__inner--split{ gap: 10px; }
+  .nav__list{ gap: 14px; flex-wrap: wrap; }
+
+  /* SOBRE */
+  .about__grid{
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+  .about__values{
+    grid-template-columns: repeat(2, minmax(0,1fr));
+  }
+  .about__media img{ height: 440px; }
+
+  /* SLIDER: 2 por vez */
+  .slide{
+    min-width: 50%;
+    height: 400px;
+  }
+  .slide__overlay{
+    padding: 22px;
+    opacity: 1;     /* ✅ tablets nem sempre têm hover confiável */
+    transform: none;
+  }
+
+  /* DEPOIMENTOS */
+  .testimonials__grid{
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .testimonials__photo{ height: 440px; }
+  .testimonials__card{ width: 100%; max-width: 520px; }
+
+  /* INSTAGRAM: 3 colunas */
+  .insta__grid{ grid-template-columns: repeat(3, 1fr); }
+  .insta__item img{ height: 220px; }
+
+  /* ATENDIMENTO */
+  .atendimento__grid{
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .atendimento__title{ font-size: 46px; }
+  .atendimento__map{
+    width: 100%;
+    margin-inline: auto;
+  }
+}
+
+
+/* --------- 14.4) Desktop (992px a 1199.98px) --------- */
+@media (min-width: 992px) and (max-width: 1199.98px){
+  /* ✅ Mantém layout desktop; só ajuste fino de respiro */
+  :root{ --gutter: 48px; }
+
+  .section{ padding: 120px 0; }
+
+  /* Instagram: garante que não “aperte” demais visualmente */
+  .insta__item img{ height: 250px; }
+}
+
+
+/* --------- 14.5) Extra Large (>= 1200px) --------- */
+@media (min-width: 1200px){
+  /* ✅ Desktop/XL como você já desenhou */
+  :root{ --gutter: 48px; }
+}
