@@ -1123,3 +1123,53 @@ h3{ font-size: 1.35rem; line-height: 1.2; }
   /* ✅ Desktop/XL como você já desenhou */
   :root{ --gutter: 48px; }
 }
+
+/* =========================================================
+   FIX MOBILE (Samsung/Android) — Sobre / Missão Visão Valores
+   Cole no FINAL do CSS
+========================================================= */
+@media (max-width: 575.98px){
+
+  /* Evita qualquer estouro horizontal por textos/elementos */
+  body{ overflow-x: hidden; }
+  .container{ width: min(var(--container), calc(100% - 28px)); }
+
+  /* SOBRE: layout em 1 coluna */
+  .about__grid{
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  /* ✅ Missão / Visão / Valores em 1 coluna (nada de texto “em pé”) */
+  .about__values{
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .mini-card{
+    padding: 16px !important;
+    border-radius: 16px;
+  }
+
+  .mini-card h3{
+    font-size: 1.1rem !important;
+    line-height: 1.2 !important;
+    margin-bottom: 6px !important;
+  }
+
+  .mini-card p{
+    font-size: .95rem !important;
+    line-height: 1.45 !important;
+    /* garante quebra bonita e evita “coluna estreita” */
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  /* Imagem do sobre: altura mais adequada no mobile */
+  .about__media img{
+    height: 360px !important;
+    width: 100%;
+    object-fit: cover;
+    animation: none !important; /* melhora estabilidade/performance no Android */
+  }
+}
